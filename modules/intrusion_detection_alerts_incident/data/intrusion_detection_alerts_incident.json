@@ -1,0 +1,162 @@
+{
+  "name": "intrusion_detection_alerts_incident",
+  "description": "An Intrusion Detection Alerts Incident occurs when an intrusion detection system (IDS) detects a security breach or unauthorized access attempt to a system or network. The IDS generates an alert to notify security personnel to investigate the incident and take appropriate action to prevent any potential damage or data loss. This incident type is critical as it helps to identify and respond to security threats in a timely manner.",
+  "params": [
+    {
+      "name": "REPLACE_WITH_NECESSARY_PORT_NUMBER",
+      "value": ""
+    },
+    {
+      "name": "REPLACE_WITH_DEFAULT_UMASK",
+      "value": ""
+    },
+    {
+      "name": "REPLACE_WITH_PASSWORD_WARNING_PERIOD",
+      "value": ""
+    },
+    {
+      "name": "LOG_DIRECTORY",
+      "value": ""
+    },
+    {
+      "name": "INTRUSION_DETECTION_SYSTEM",
+      "value": ""
+    },
+    {
+      "name": "REPLACE_WITH_MINIMUM_PASSWORD_AGE",
+      "value": ""
+    },
+    {
+      "name": "REPLACE_WITH_MAXIMUM_PASSWORD_AGE",
+      "value": ""
+    },
+    {
+      "name": "HOST_NAME",
+      "value": ""
+    },
+    {
+      "name": "K8S_CLUSTER_NAME",
+      "value": ""
+    },
+    {
+      "name": "NAMESPACE",
+      "value": ""
+    }
+  ],
+  "cells": [
+    {
+      "name": "cell_1",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Intrusion Detection Alerts Incident\nAn Intrusion Detection Alerts Incident occurs when an intrusion detection system (IDS) detects a security breach or unauthorized access attempt to a system or network. The IDS generates an alert to notify security personnel to investigate the incident and take appropriate action to prevent any potential damage or data loss. This incident type is critical as it helps to identify and respond to security threats in a timely manner."
+    },
+    {
+      "name": "cell_2",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Find the intrusion detection system logs"
+    },
+    {
+      "name": "cell_3",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `grep -r \"${LOG_DIRECTORY}\" -e \"${INTRUSION_DETECTION_SYSTEM}\"`"
+    },
+    {
+      "name": "cell_4",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check system logs for unusual activity"
+    },
+    {
+      "name": "cell_5",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `journalctl -k | grep -i \"intrusion\\|security\"`"
+    },
+    {
+      "name": "cell_6",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check iptables rules for any unexpected ports or IP addresses"
+    },
+    {
+      "name": "cell_7",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `iptables -L -n -v`"
+    },
+    {
+      "name": "cell_8",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check network connections"
+    },
+    {
+      "name": "cell_9",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `netstat -tulanp`"
+    },
+    {
+      "name": "cell_10",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check running processes"
+    },
+    {
+      "name": "cell_11",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `ps -aux`"
+    },
+    {
+      "name": "cell_12",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check user accounts"
+    },
+    {
+      "name": "cell_13",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `cat /etc/passwd`"
+    },
+    {
+      "name": "cell_14",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check system configuration"
+    },
+    {
+      "name": "cell_15",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `cat /etc/sysctl.conf`"
+    },
+    {
+      "name": "cell_16",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check for any unauthorized changes to system startup scripts"
+    },
+    {
+      "name": "cell_17",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `ls -la /etc/init.d/`"
+    },
+    {
+      "name": "cell_18",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Harden system configurations and policies, and deploy additional security measures such as firewalls and intrusion detection systems."
+    },
+    {
+      "name": "cell_19",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "host | host_name=$HOST_NAME | invoke_harden_system_and_firewall($REPLACE_WITH_NECESSARY_PORT_NUMBER, $REPLACE_WITH_DEFAULT_UMASK, $REPLACE_WITH_PASSWORD_WARNING_PERIOD, $REPLACE_WITH_MINIMUM_PASSWORD_AGE, $REPLACE_WITH_MAXIMUM_PASSWORD_AGE)"
+    }
+  ]
+}
